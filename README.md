@@ -3,5 +3,5 @@ This c++ code finds number of subnets, first address in the block, last address 
 
 
 
-1. User inputs - block of ipv4 addresses and netmask(Host)
-2. output - number of subnets, first address in the block, last address in the block, number of addresses in the block
+**Input** - block of ipv4 addresses and netmask(Host)
+**Output** - number of subnets, first address in the block, last address in the block, number of addresses in the block
