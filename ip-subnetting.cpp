@@ -3,7 +3,10 @@
 // MARK: - Headers
 #include <iostream>
 #include <string.h>
+#include <math.h>
 using namespace std;
+
+
 
 
 // MARK: - Error function
@@ -194,11 +197,15 @@ e:
     checkRange(sc);
     checkRange(sd);
     
-    // If no error with exit() then print IP is valid
-    cout<<"The IP is valid";
-	
+    // If no error then continue	
 }
 
+
+// MARK : - Function to calculate number of addresses in the block
+void numofaddrblock(int n1)
+{
+	cout<<"Number of addresses in given block = "<<pow(2,32-n1);
+}
 
 
 // MARK: - Main function
@@ -211,19 +218,49 @@ int main()
 	cout<<"Enter block of addresses given : ";
 	cin>>s;
 	int netmask,count=0;
-	int n=s.size();
+	int n=s.size(),i=0,flag=0;
 	
-	// calling check() to validate the ipv4 before further calculation.
+	// calling check() to validate the ipv4 before further calculation if error then stop.
 	check(s);
 	
+	// Setting flag to calculate netmask
+	for(i=0;i<n;i++)
+	{
+		if(s[i]=='/')
+		{
+			flag=1;
+		}
+		if (flag==1)
+		{
+			count++;
+		}
+	}
+	count--;
 	
-	// TODO: - 1. number of subnets, 
-	//		   2. first address in the block,
-	//		   3. last address in the block, 
-	//		   4. number of addresses in the block.
-
-
+	// Calculating netmask
+	if (count==1)
+	{
+		netmask=int(s[n-1])-48;
+	}
+	else
+	{
+		netmask=int(s[n-1])-48+10*(int(s[n-2])-48);
+	}
 	
+	
+	// Calling numofaddrblock() to calculate number of addresses in the block by passing netmask as parameter.
+	numofaddrblock(netmask);
 	
 	return 0;
 }
+
+
+
+
+
+
+
+	// TODO: - 1. number of subnets, 
+	//		   2. first address in the block,
+	//		   3. last address in the block, 
+
