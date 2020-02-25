@@ -201,11 +201,37 @@ e:
 }
 
 
-// MARK : - Function to calculate number of addresses in the block
+// MARK : - Function to calculate number of addresses in the given block
 void numofaddrblock(int n1)
 {
 	cout<<"Number of addresses in given block = "<<pow(2,32-n1);
 }
+
+
+// MARK : - Function to calculate decimal to binary
+string decto8bin(int n)
+{
+	string t;
+	short digit = n;
+	//print out each bit of the digit
+	for(int i = 0; i < 8; i++)
+	{
+		if(0x80 & digit) //if the high bit is on, print 1
+		{
+			t[i]='1';
+		}
+		else
+		{
+			//otherwise print 0
+			t[i]='0';
+		}
+    digit = digit << 1; //shift the bits left by one to get the next highest bit.
+    }
+    
+    return t;
+    
+}
+
 
 
 // MARK: - Main function
@@ -215,10 +241,22 @@ int main()
 	
 	// MARK: - Variables and input
 	string s;
+	int netmask,count=0,i=0,flag=0;
+    int a[30],b[30],c[30],d[30],k=0;
+    int ca=0,cb=0,cc=0,cd=0;
+    
+    // Initialise a,b,c,d to 0.
+    for(i=0;i<30;i++)
+    {
+        a[i]=0;
+        b[i]=0;
+        c[i]=0;
+        d[i]=0;
+    }
 	cout<<"Enter block of addresses given : ";
 	cin>>s;
-	int netmask,count=0;
-	int n=s.size(),i=0,flag=0;
+	
+	int n=s.size();
 	
 	// calling check() to validate the ipv4 before further calculation if error then stop.
 	check(s);
@@ -246,10 +284,127 @@ int main()
 	{
 		netmask=int(s[n-1])-48+10*(int(s[n-2])-48);
 	}
+	count=0;
 	
 	
-	// Calling numofaddrblock() to calculate number of addresses in the block by passing netmask as parameter.
-	numofaddrblock(netmask);
+	int t=0;
+    count=0;
+    
+    // MARK: - Function to get values values of a,b,c,d by adding the 4 parts of the ipv4 and also to get the count of each part i.e ca, cb, cc, cd
+    for(int i=0;i<n-3;i++)
+    {
+        
+        if(s[i]=='.' && count!=3)
+        {
+            for(int j=t;j<i;j++)
+            {
+                if (isdigit(s[j]) == 1)
+                {
+                    if(count==0)
+                    {
+                        a[k]=(int)s[j]-48;
+                        ca++;
+                        k++;
+                    }
+                    else if(count==1)
+                    {
+                        b[k]=(int)s[j]-48;
+                        cb++;
+                        k++;
+                    }
+                    else if(count==2)
+                    {
+                        c[k]=(int)s[j]-48;
+                        cc++;
+                        k++;
+                    }
+                }
+                else {
+                    error(5);
+                }
+            }
+            t=i+1;
+            k=0;
+            count++;
+        }
+        if(count==3)
+        {
+            k=0;
+            // Goto to e
+            goto e;
+        }
+    }
+
+    
+    // MARK : - e label for goto
+e:
+    for(int j=t;j<n-3;j++)
+    {
+        if (isdigit(s[j]) == 1)
+        {
+            d[k]=(int)s[j]-48;
+            cd++;
+            k++;
+        }
+        else {
+            error(5);
+        }
+    }
+    
+    // MARK: - sum variables
+    int sa=0,sb=0,sc=0,sd=0;
+    
+ 
+    // Calculate the vaule of sa, sb, sc, sd using sum()
+    sa=sum(a[0],a[1],a[2],ca);
+    sb=sum(b[0],b[1],b[2],cb);
+    sc=sum(c[0],c[1],c[2],cc);
+    sd=sum(d[0],d[1],d[2],cd);
+    
+    // For binary ipv4
+    string bin[32];
+    string temp=decto8bin(sa);
+	
+	// Calculate binary ipv4
+    for(i=0;i<8;i++)
+    {
+		bin[i]=temp[i];
+	}
+	k=0;
+	temp=decto8bin(sb);
+	for(i=8;i<16;i++)
+    {
+		bin[i]=temp[k];
+		k++;
+	}
+	k=0;
+	temp=decto8bin(sc);
+	for(i=16;i<24;i++)
+    {
+		bin[i]=temp[k];
+		k++;
+	}
+	k=0;
+	temp=decto8bin(sd);
+	for(i=24;i<32;i++)
+    {
+		bin[i]=temp[k];
+		k++;
+	}
+	
+	// For First ip address in block we set (32-netmask) bit from right to '0'
+	for(i=0;i<32;i++)
+	{
+		if(i>=netmask)
+		{
+			bin[i]='0';
+		}
+	}
+	
+	for(i=0;i<32;i++)
+	{
+		cout<<bin[i];
+	}
 	
 	return 0;
 }
@@ -258,9 +413,10 @@ int main()
 
 
 
-
+// Calling numofaddrblock() to calculate number of addresses in the block by passing netmask as parameter.
+	//numofaddrblock(netmask);
 
 	// TODO: - 1. number of subnets, 
-	//		   2. first address in the block,
+	//		   2. first address in the block, {Half done}
 	//		   3. last address in the block, 
 
