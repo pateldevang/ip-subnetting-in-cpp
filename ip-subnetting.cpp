@@ -6,9 +6,6 @@
 #include <math.h>
 using namespace std;
 
-
-
-
 // MARK: - Error function
 void error(int a)
 {
@@ -233,6 +230,35 @@ string decto8bin(int n)
 }
 
 
+// MARK : - Function to convert bianry to decimal
+int convertBinaryToDecimal(long long n)
+{
+    int decimalNumber = 0, i = 0, remainder;
+    while (n!=0)
+    {
+        remainder = n%10;
+        n /= 10;
+        decimalNumber += remainder*pow(2,i);
+        ++i;
+    }
+    return decimalNumber;
+}
+
+
+// MARK : - 8 bit binary from string
+
+
+int to8bitbinary(int s,int e,string b)
+{
+	int sum=0,t=7;
+	for(int k=s;k<e;k++)
+	{
+		sum=sum+pow(10,t)*((int)b[k]-48);
+		t--;
+	}
+	return sum;
+}
+
 
 // MARK: - Main function
 
@@ -362,33 +388,34 @@ e:
     sd=sum(d[0],d[1],d[2],cd);
     
     // For binary ipv4
-    string bin[32];
+    string bin;
     string temp=decto8bin(sa);
+    string temp1=decto8bin(sb);
+    string temp2=decto8bin(sc);
+    string temp3=decto8bin(sd);
 	
 	// Calculate binary ipv4
     for(i=0;i<8;i++)
     {
-		bin[i]=temp[i];
+		bin=bin+temp[i];
 	}
 	k=0;
-	temp=decto8bin(sb);
 	for(i=8;i<16;i++)
     {
-		bin[i]=temp[k];
+		bin=bin+temp1[k];
 		k++;
 	}
 	k=0;
-	temp=decto8bin(sc);
+	
 	for(i=16;i<24;i++)
     {
-		bin[i]=temp[k];
+		bin=bin+temp2[k];
 		k++;
 	}
 	k=0;
-	temp=decto8bin(sd);
 	for(i=24;i<32;i++)
     {
-		bin[i]=temp[k];
+		bin=bin+temp3[k];
 		k++;
 	}
 	
@@ -401,13 +428,22 @@ e:
 		}
 	}
 	
-	for(i=0;i<32;i++)
-	{
-		cout<<bin[i];
-	}
+	// convert the binary to decimal ipv4
+	sa=to8bitbinary(0,8,bin);
+	sa=convertBinaryToDecimal(sa);
+	sb=to8bitbinary(8,16,bin);
+	sb=convertBinaryToDecimal(sb);
+	sc=to8bitbinary(16,24,bin);
+	sc=convertBinaryToDecimal(sc);
+	sd=to8bitbinary(24,32,bin);
+	sd=convertBinaryToDecimal(sd);
+	
+	cout<<"First address in block is = "<<sa<<"."<<sb<<"."<<sc<<"."<<sd;
+	
 	
 	return 0;
 }
+
 
 
 
@@ -417,6 +453,5 @@ e:
 	//numofaddrblock(netmask);
 
 	// TODO: - 1. number of subnets, 
-	//		   2. first address in the block, {Half done}
-	//		   3. last address in the block, 
+	// 	   3. last address in the block, 
 
