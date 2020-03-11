@@ -316,6 +316,9 @@ int main()
 	int t=0;
     count=0;
     
+    // Calling numofaddrblock() to calculate number of addresses in the block by passing netmask as parameter.
+	numofaddrblock(netmask);
+    
     // MARK: - Function to get values values of a,b,c,d by adding the 4 parts of the ipv4 and also to get the count of each part i.e ca, cb, cc, cd
     for(int i=0;i<n-3;i++)
     {
@@ -419,7 +422,7 @@ e:
 		k++;
 	}
 	
-	// For First ip address in block we set (32-netmask) bit from right to '0'
+	// For First ip address in block we set (32 - netmask) bit from right to '0'
 	for(i=0;i<32;i++)
 	{
 		if(i>=netmask)
@@ -438,8 +441,32 @@ e:
 	sd=to8bitbinary(24,32,bin);
 	sd=convertBinaryToDecimal(sd);
 	
-	cout<<"First address in block is = "<<sa<<"."<<sb<<"."<<sc<<"."<<sd;
 	
+	
+	
+	
+	cout<<"\nFirst address in block is = "<<sa<<"."<<sb<<"."<<sc<<"."<<sd;
+	
+	// For last ip address in block we set (32 - netmask) bit from right to '1'
+	for(i=0;i<32;i++)
+	{
+		if(i>=netmask)
+		{
+			bin[i]='1';
+		}
+	}
+	
+	// convert the binary to decimal ipv4
+	sa=to8bitbinary(0,8,bin);
+	sa=convertBinaryToDecimal(sa);
+	sb=to8bitbinary(8,16,bin);
+	sb=convertBinaryToDecimal(sb);
+	sc=to8bitbinary(16,24,bin);
+	sc=convertBinaryToDecimal(sc);
+	sd=to8bitbinary(24,32,bin);
+	sd=convertBinaryToDecimal(sd);
+	
+	cout<<"\nLast address in block is = "<<sa<<"."<<sb<<"."<<sc<<"."<<sd;
 	
 	return 0;
 }
@@ -449,9 +476,6 @@ e:
 
 
 
-// Calling numofaddrblock() to calculate number of addresses in the block by passing netmask as parameter.
-	//numofaddrblock(netmask);
 
 	// TODO: - 1. number of subnets, 
-	// 	   3. last address in the block, 
 
