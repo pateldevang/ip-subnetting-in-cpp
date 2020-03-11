@@ -74,7 +74,7 @@ string decto8bin(int n)
 }
 
 
-// MARK : - Function to convert bianry to decimal
+// MARK : - Function to convert bianary to decimal
 int convertBinaryToDecimal(long long n)
 {
     int decimalNumber = 0, i = 0, remainder;
